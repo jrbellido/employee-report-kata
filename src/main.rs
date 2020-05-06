@@ -7,11 +7,17 @@ struct Employee {
 const SORT_ASC: u8 =  1;
 const SORT_DESC: u8 = 2;
 
+const SUNDAY: u8 = 6;
+const REST_OF_WEEK: u8 = 1;
+
+const OLDER_THAN_18: u8 = 18;
+const ANY_AGE: u8 = 0;
+
 fn employee_schedule(employees: Vec<Employee> ,day_of_week: u8) -> Vec<Employee> {
-    if day_of_week == 6 {
-        return employees_older_than(employees, 18);
+    if day_of_week == SUNDAY {
+        return employees_older_than(employees, OLDER_THAN_18);
     } else {
-        return employees_older_than(employees, 0);
+        return employees_older_than(employees, ANY_AGE);
     }
 }
 
@@ -67,7 +73,7 @@ fn employees_on_sunday_must_be_older_than_18() {
         Employee{name: create_name("Max"), age: 17},
         Employee{name: create_name("Sam"), age: 18}
     ];
-    let result = employee_schedule(employees, 6);
+    let result = employee_schedule(employees, SUNDAY);
     assert_eq!(result.len(), 1);
     assert_eq!(result[0].name, "Sam");
 }
@@ -78,7 +84,7 @@ fn employees_on_monday_can_be_anyone() {
         Employee{name: create_name("Max"), age: 17},
         Employee{name: create_name("Sam"), age: 18}
     ];
-    let result = employee_schedule(employees, 0);
+    let result = employee_schedule(employees, REST_OF_WEEK);
     assert_eq!(result.len(), 2);
 }
 
@@ -107,10 +113,10 @@ fn get_employees_sorted() {
 #[test]
 fn get_employees_capitalized() {
     let employees = vec![
-       Employee{name: create_name("john doe AA"), age: 18},
+       Employee{name: create_name("john doe"), age: 18},
     ];
     let result = employees_older_than(employees, 18);
-    assert_eq!(result[0].name, "John Doe Aa");
+    assert_eq!(result[0].name, "John Doe");
 }
 
 #[test]
