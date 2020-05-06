@@ -39,7 +39,8 @@ fn employees_on_sunday_must_be_older_than_18() {
         Employee{name: String::from("Sam"), age: 18}
     ];
     let result = employee_schedule(employees, 6);
-    assert_eq!(result.len(), 1)
+    assert_eq!(result.len(), 1);
+    assert_eq!(result[0].name, "Sam");
 }
 
 #[test]
@@ -49,7 +50,7 @@ fn employees_on_monday_can_be_anyone() {
         Employee{name: String::from("Sam"), age: 18}
     ];
     let result = employee_schedule(employees, 0);
-    assert_eq!(result[0].name, "Max")
+    assert_eq!(result.len(), 2);
 }
 
 #[test]
