@@ -5,30 +5,21 @@ struct Employee {
 }
 
 fn employee_schedule(employees: Vec<Employee> ,day_of_week: u8) -> Vec<Employee> {
-    let mut result = Vec::new();
-
-    for employee in employees {
-        if day_of_week == 6 {
-            if employee.age >= 18 {
-                result.push(employee)
-            }
-        } else {
-            result.push(employee)
-        }
+    if day_of_week == 6 {
+        return employees_older_than(employees, 18);
+    } else {
+        return employees_older_than(employees, 0);
     }
-
-    return result;
 }
 
-fn employees_older_than_18(employees: Vec<Employee>) -> Vec<Employee> {
+fn employees_older_than(employees: Vec<Employee>, age: u8) -> Vec<Employee> {
     let mut result = Vec::new();
-
     for employee in employees {
-        if employee.age >= 18 {
+        if employee.age >= age {
             result.push(employee)
         }
     }
-
+    result.sort_by(|a, b| a.name.cmp(&b.name));
     return result;
 }
 
@@ -59,7 +50,19 @@ fn get_only_18_employees() {
         Employee{name: String::from("Max"), age: 17},
         Employee{name: String::from("Sam"), age: 18}
     ];
-    let result = employees_older_than_18(employees);
+    let result = employees_older_than(employees, 18);
     assert_eq!(result.len(), 1)
+}
+
+#[test]
+fn get_employees_sorted() {
+    let employees = vec![
+        Employee{name: String::from("Sam"), age: 18},
+        Employee{name: String::from("Max"), age: 18}
+    ];
+    let result = employees_older_than(employees, 18);
+    assert_eq!(result.len(), 2);
+    assert_eq!(result[0].name, "Max");
+    assert_eq!(result[1].name, "Sam")
 }
 
