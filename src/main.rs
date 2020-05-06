@@ -16,11 +16,36 @@ fn employees_older_than(employees: Vec<Employee>, age: u8) -> Vec<Employee> {
     let mut result = Vec::new();
     for employee in employees {
         if employee.age >= age {
-            result.push(employee)
+            let emp = capitalize_name(employee);
+            result.push(emp)
         }
     }
     result.sort_by(|a, b| a.name.cmp(&b.name));
     return result;
+}
+
+fn capitalize_name(mut employee: Employee) -> Employee {
+    let mut capitalized = String::new();
+    let mut word_start = true;
+    for c in employee.name.chars() {
+        println!("char is {} word_start={}", c, word_start);
+        match c {
+            ' ' => {
+                capitalized.push(c);
+                word_start = true
+            },
+            _ => {
+                if word_start { 
+                    capitalized.push(c.to_ascii_uppercase());
+                } else {
+                    capitalized.push(c.to_ascii_lowercase());
+                };
+                word_start = false;
+            }
+        };
+    }
+    employee.name = capitalized;
+    return employee
 }
 
 fn create_name(name: &str) -> String {
@@ -73,12 +98,9 @@ fn get_employees_sorted() {
 #[test]
 fn get_employees_capitalized() {
     let employees = vec![
-        Employee{name: create_name("john doe"), age: 18},
-        Employee{name: create_name("max"), age: 18}
+       Employee{name: create_name("john doe AA"), age: 18},
     ];
     let result = employees_older_than(employees, 18);
-    assert_eq!(result.len(), 2);
-    assert_eq!(result[0].name, "John Doe");
-    assert_eq!(result[1].name, "Max")
+    assert_eq!(result[0].name, "John Doe Aa");
 }
 
