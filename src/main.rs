@@ -23,11 +23,15 @@ fn employees_older_than(employees: Vec<Employee>, age: u8) -> Vec<Employee> {
     return result;
 }
 
+fn create_name(name: &str) -> String {
+    String::from(name)
+}
+
 #[test]
 fn employees_on_sunday_must_be_older_than_18() {
     let employees = vec![
-        Employee{name: String::from("Max"), age: 17},
-        Employee{name: String::from("Sam"), age: 18}
+        Employee{name: create_name("Max"), age: 17},
+        Employee{name: create_name("Sam"), age: 18}
     ];
     let result = employee_schedule(employees, 6);
     assert_eq!(result.len(), 1);
@@ -37,8 +41,8 @@ fn employees_on_sunday_must_be_older_than_18() {
 #[test]
 fn employees_on_monday_can_be_anyone() {
     let employees = vec![
-        Employee{name: String::from("Max"), age: 17},
-        Employee{name: String::from("Sam"), age: 18}
+        Employee{name: create_name("Max"), age: 17},
+        Employee{name: create_name("Sam"), age: 18}
     ];
     let result = employee_schedule(employees, 0);
     assert_eq!(result.len(), 2);
@@ -47,8 +51,8 @@ fn employees_on_monday_can_be_anyone() {
 #[test]
 fn get_only_18_employees() {
     let employees = vec![
-        Employee{name: String::from("Max"), age: 17},
-        Employee{name: String::from("Sam"), age: 18}
+        Employee{name: create_name("Max"), age: 17},
+        Employee{name: create_name("Sam"), age: 18}
     ];
     let result = employees_older_than(employees, 18);
     assert_eq!(result.len(), 1)
@@ -57,12 +61,24 @@ fn get_only_18_employees() {
 #[test]
 fn get_employees_sorted() {
     let employees = vec![
-        Employee{name: String::from("Sam"), age: 18},
-        Employee{name: String::from("Max"), age: 18}
+        Employee{name: create_name("Sam"), age: 18},
+        Employee{name: create_name("Max"), age: 18}
     ];
     let result = employees_older_than(employees, 18);
     assert_eq!(result.len(), 2);
     assert_eq!(result[0].name, "Max");
     assert_eq!(result[1].name, "Sam")
+}
+
+#[test]
+fn get_employees_capitalized() {
+    let employees = vec![
+        Employee{name: create_name("john doe"), age: 18},
+        Employee{name: create_name("max"), age: 18}
+    ];
+    let result = employees_older_than(employees, 18);
+    assert_eq!(result.len(), 2);
+    assert_eq!(result[0].name, "John Doe");
+    assert_eq!(result[1].name, "Max")
 }
 
