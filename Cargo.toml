@@ -1,5 +1,5 @@
 [package]
-name = "employee_report_kata"
+name = "employee-report-kata"
 version = "0.1.0"
 authors = ["Joan R. <jrbellido@gmail.com>"]
 edition = "2018"
