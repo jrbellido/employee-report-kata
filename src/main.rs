@@ -57,7 +57,7 @@ fn capitalize_name(mut employee: Employee) -> Employee {
                     capitalized.push(c.to_ascii_uppercase());
                 } else {
                     capitalized.push(c.to_ascii_lowercase());
-                };
+                }
                 word_start = false;
             }
         };
