@@ -4,31 +4,37 @@ struct Employee {
     age: u8,
 }
 
-const SORT_ASC: u8 = 1;
-const SORT_DESC: u8 = 2;
+enum Sorting {
+    Ascending,
+    Descending
+}
 
-const SUNDAY: u8 = 6;
-const REST_OF_WEEK: u8 = 1;
+enum DayOfTheWeek {
+    Monday,
+    Sunday
+}
 
-const OLDER_THAN_18: u8 = 18;
-const ANY_AGE: u8 = 0;
+#[derive(Clone,Copy)]
+enum Age {
+    OlderThan18 = 18,
+    Any = 0
+}
 
-fn employee_schedule(employees: Vec<Employee>, day_of_week: u8) -> Vec<Employee> {
-    if day_of_week == SUNDAY {
-        return employees_older_than(employees, OLDER_THAN_18);
-    } else {
-        return employees_older_than(employees, ANY_AGE);
+fn employee_schedule(employees: Vec<Employee>, day_of_week: DayOfTheWeek) -> Vec<Employee> {
+    match day_of_week {
+        DayOfTheWeek::Sunday => employees_older_than(employees, Age::OlderThan18),
+        DayOfTheWeek::Monday => employees_older_than(employees, Age::Any),
     }
 }
 
-fn employees_older_than(employees: Vec<Employee>, age: u8) -> Vec<Employee> {
-    return employees_older_than_sorted(employees, age, SORT_ASC);
+fn employees_older_than(employees: Vec<Employee>, age: Age) -> Vec<Employee> {
+    return employees_older_than_sorted(employees, age, Sorting::Ascending);
 }
 
-fn employees_older_than_sorted(employees: Vec<Employee>, age: u8, sort: u8) -> Vec<Employee> {
+fn employees_older_than_sorted(employees: Vec<Employee>, age: Age, sort: Sorting) -> Vec<Employee> {
     let mut result: Vec<Employee> = employees
         .iter()
-        .filter(|e| e.age >= age)
+        .filter(|e| e.age >= age as u8)
         .map(|e| {
             capitalize_name(Employee {
                 name: e.name.to_string(),
@@ -36,9 +42,9 @@ fn employees_older_than_sorted(employees: Vec<Employee>, age: u8, sort: u8) -> V
             })
         })
         .collect();
-    result.sort_by(|a, b| a.name.cmp(&b.name));
-    if sort == SORT_DESC {
-        result.reverse();
+    match sort {
+        Sorting::Ascending => result.sort_by(|a, b| a.name.cmp(&b.name)),
+        Sorting::Descending => result.sort_by(|a, b| b.name.cmp(&a.name)),
     }
     result
 }
@@ -78,7 +84,7 @@ fn employees_on_sunday_must_be_older_than_18() {
             age: 18,
         },
     ];
-    let result = employee_schedule(employees, SUNDAY);
+    let result = employee_schedule(employees, DayOfTheWeek::Sunday);
     assert_eq!(result.len(), 1);
     assert_eq!(result[0].name, "Sam");
 }
@@ -95,7 +101,7 @@ fn employees_on_monday_can_be_anyone() {
             age: 18,
         },
     ];
-    let result = employee_schedule(employees, REST_OF_WEEK);
+    let result = employee_schedule(employees, DayOfTheWeek::Monday);
     assert_eq!(result.len(), 2);
 }
 
@@ -111,7 +117,7 @@ fn get_only_18_employees() {
             age: 18,
         },
     ];
-    let result = employees_older_than(employees, 18);
+    let result = employees_older_than(employees, Age::OlderThan18);
     assert_eq!(result.len(), 1)
 }
 
@@ -127,7 +133,7 @@ fn get_employees_sorted() {
             age: 18,
         },
     ];
-    let result = employees_older_than_sorted(employees, 18, SORT_ASC);
+    let result = employees_older_than_sorted(employees, Age::OlderThan18, Sorting::Ascending);
     assert_eq!(result.len(), 2);
     assert_eq!(result[0].name, "Max");
     assert_eq!(result[1].name, "Sam")
@@ -139,7 +145,7 @@ fn get_employees_capitalized() {
         name: String::from("john doe"),
         age: 18,
     }];
-    let result = employees_older_than(employees, 18);
+    let result = employees_older_than(employees, Age::OlderThan18);
     assert_eq!(result[0].name, "John Doe");
 }
 
@@ -155,6 +161,6 @@ fn get_employees_sorted_desc() {
             age: 18,
         },
     ];
-    let result = employees_older_than_sorted(employees, 18, SORT_DESC);
+    let result = employees_older_than_sorted(employees, Age::OlderThan18, Sorting::Descending);
     assert_eq!(result[0].name, "Sam");
 }
