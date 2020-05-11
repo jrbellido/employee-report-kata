@@ -8,18 +8,18 @@ struct Employee {
 
 enum Sorting {
     Ascending,
-    Descending
+    Descending,
 }
 
 enum DayOfTheWeek {
     Monday,
-    Sunday
+    Sunday,
 }
 
-#[derive(Clone,Copy)]
+#[derive(Clone, Copy)]
 enum Age {
     OlderThan18 = 18,
-    Any = 0
+    Any = 0,
 }
 
 fn employee_schedule(employees: Vec<Employee>, day_of_week: DayOfTheWeek) -> Vec<Employee> {
@@ -38,12 +38,9 @@ fn employees_older_than_sorted(employees: Vec<Employee>, age: Age, sort: Sorting
         .iter()
         .filter(|e| e.age >= age as u8)
         .map(|e| {
-            capitalize_name(Employee {
-                name: e.name.to_string(),
-                age: e.age,
-            })
+            Employee { name: capitalize(e.name.to_string()), age: e.age }
         })
-    .collect();
+        .collect();
     match sort {
         Sorting::Ascending => result.sort_by(|a, b| a.name.cmp(&b.name)),
         Sorting::Descending => result.sort_by(|a, b| b.name.cmp(&a.name)),
@@ -55,39 +52,16 @@ fn capitalize(s: String) -> String {
     let mut word_starts = true;
     s.chars()
         .map(|c| {
-            if c == ' ' {
+            return if c == ' ' {
                 word_starts = true;
-                return c.to_string()
+                c.to_string()
             } else if word_starts {
                 word_starts = false;
-                return c.to_uppercase().to_string()
+                c.to_uppercase().to_string()
             } else {
-                return c.to_lowercase().to_string()
-            } 
+                c.to_lowercase().to_string()
+            };
         }).collect()
-}
-
-fn capitalize_name(mut employee: Employee) -> Employee {
-    let mut capitalized = String::new();
-    let mut word_start = true;
-    for c in employee.name.chars() {
-        match c {
-            ' ' => {
-                capitalized.push(c);
-                word_start = true
-            }
-            _ => {
-                if word_start {
-                    capitalized.push(c.to_ascii_uppercase());
-                } else {
-                    capitalized.push(c.to_ascii_lowercase());
-                }
-                word_start = false;
-            }
-        };
-    }
-    employee.name = capitalized;
-    return employee;
 }
 
 #[test]
@@ -200,4 +174,3 @@ fn capitalize_name_works_for_empty_string() {
     let result = capitalize(String::from(""));
     assert_eq!(result, "");
 }
-
