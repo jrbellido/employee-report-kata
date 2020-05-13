@@ -38,7 +38,7 @@ fn employees_older_than_sorted(employees: Vec<Employee>, age: Age, sort: Sorting
         .iter()
         .filter(|e| e.age >= age as u8)
         .map(|e| {
-            Employee { name: capitalize(e.name.to_string()), age: e.age }
+            Employee { name: capitalize(&e.name.to_string()), age: e.age }
         })
         .collect();
     match sort {
@@ -48,7 +48,7 @@ fn employees_older_than_sorted(employees: Vec<Employee>, age: Age, sort: Sorting
     result
 }
 
-fn capitalize(s: String) -> String {
+fn capitalize(s: &String) -> String {
     let mut word_starts = true;
     s.chars()
         .map(|c| {
@@ -159,18 +159,18 @@ fn get_employees_sorted_desc() {
 
 #[test]
 fn capitalize_name_works_for_one_word() {
-    let result = capitalize(String::from("john"));
+    let result = capitalize(&String::from("john"));
     assert_eq!(result, "John");
 }
 
 #[test]
 fn capitalize_name_works_for_two_words() {
-    let result = capitalize(String::from("john doe"));
+    let result = capitalize(&String::from("john doe"));
     assert_eq!(result, "John Doe");
 }
 
 #[test]
 fn capitalize_name_works_for_empty_string() {
-    let result = capitalize(String::from(""));
+    let result = capitalize(&String::from(""));
     assert_eq!(result, "");
 }
