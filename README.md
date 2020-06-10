@@ -6,6 +6,7 @@ Rules from: http://codingdojo.org/kata/Employee-Report/
 
 This Kata was developed to show how overspecification of assertions harms maintainability of tests. A blog post with a possible solution can be found here: https://dev.to/webpapaya/writing-better-test-assertions-lml
 
+
 ## Problem Description
 
 You’re building an employee management system of a local grocery store. The shop-owner wants to open the shop on Sunday and due to legal restrictions employees younger than 18 years are not allowed to work Sundays. The employee asks for a reporting feature so she can schedule work shifts. All employees are already stored somewhere and have the following properties:
@@ -22,7 +23,8 @@ const employees = [
 ];
 ```
 
-## Rules
+
+## Rules
 
 Start with the first user-story and write at least one test for every requirement. Try not to look on future requirements upfront and follow the TDD-Cycle strictly.
 
